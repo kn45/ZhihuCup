@@ -5,21 +5,20 @@ import fasttext
 mdl = fasttext.load_model('mdl_fasttext_supervised.bin')
 
 pred_file = '../data_all/question_eval_set.txt'
-with open(pred_file) as f:
-    pred_data = [x.rstrip('\n') for x in f.readlines()]
+pred_res = 'res_pred/res_pred.csv'
 
-pred_id = []
-pred_feats = []
-for inl in pred_data:
-    flds = inl.split('\t')
-    pred_id.append(flds[0])
-    pred_feats.append(' '.join(flds[2].split(',')))
-del pred_data
-
-print len(pred_feats)
-print pred_feats[:2]
-
-for p in pred_feats:
-    pred_raw = mdl.predict_proba([p], 5)
-    print pred_raw
-#print pred_raw
+with open(pred_file) as f, open(pred_res, 'w') as fo:
+    # qid, label, title_chars, title_words
+    for n, line in enumerate(f):
+        flds = line.rstrip('\n').split('\t')
+        pred_id = flds[0]
+        pred_feats = ' '.join(flds[2].split(','))
+        if len(pred_feats) == 0:
+            pred_feats = ' '
+        try:
+            pred_raw = mdl.predict([pred_feats], 5)
+        except:
+            sys.stderr.write(str(n) + '\t' + line)
+            sys.exit(1)
+        pred_label = ','.join(map(lambda x: x[9:], pred_raw[0]))
+        print >> fo, pred_id + ',' + pred_label
