@@ -5,10 +5,10 @@ import sys
 
 
 mode = 'supervised'
-input_file = 'data_train/data_trnvld.ssv'
+input_file = 'feat_train/trnvld_feature.ssv'
 model_file = 'mdl_fasttext_' + mode
 
-test_file = 'data_test/data_test.ssv'
+test_file = 'feat_test/test_feature.ssv'
 
 model = fasttext.supervised(
     input_file=input_file,
@@ -25,4 +25,4 @@ model = fasttext.supervised(
     loss='ns',
     silent=0)
 
-model.test(test_file)
+# model.test(test_file)  # too slow
