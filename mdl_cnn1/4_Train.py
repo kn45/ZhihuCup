@@ -47,7 +47,7 @@ mdl = TextCNNClassifier(
 
 sess = tf.Session()
 sess.run(tf.global_variables_initializer())
-while mdl.global_steps <= 10:
+while mdl.global_steps <= 100:
     batch_data = get_fbatch(train_fp, 128)
     if len(batch_data) <= 0:
         break
