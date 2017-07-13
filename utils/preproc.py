@@ -51,3 +51,7 @@ def zero_padding(inp, seq_len):
         out[i] = v
     return out
 
+if __name__  == '__main__':
+    table_tst = DictTable('word_dict')
+    print table_tst.lookup(['w1381', 'w12030'])
+    print table_tst.lookup(['w54579', 'w10583'])
