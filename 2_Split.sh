@@ -14,7 +14,7 @@ data_valid=data_train/data_valid.tsv
 !
 data_test=data_test/data_test.tsv
 
-test_ratio=0.15
+test_ratio=0.08
 valid_ratio=0.15
 
 
