@@ -5,7 +5,6 @@ import itertools
 import sys
 
 out_mode = 'prob' if len(sys.argv) > 1 and sys.argv[1] == 'prob' else 'cls'
-#test_file = '../data_test/data_test.1k.tsv'
 test_file = '../data_test/data_test.tsv'
 if out_mode == 'cls':
     test_res = 'res_test/res_test.tsv'
