@@ -1,0 +1,8 @@
+*/feat_train
+*/feat_test
+*/res_pred
+*/res_test
+*.bin
+data_all
+data_train
+data_test
