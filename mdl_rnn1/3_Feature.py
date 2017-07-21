@@ -2,7 +2,7 @@
 
 import sys
 sys.path.append('../utils')
-from preproc import DictTable
+from dataproc import DictTable
 
 word_tb = DictTable('word_dict')
 label_tb = DictTable('label_dict')
