@@ -6,3 +6,4 @@
 data_all
 data_train
 data_test
+*.DS_Store
