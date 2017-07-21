@@ -41,8 +41,10 @@ class DictTable(object):
 class BatchReader(object):
     """Get batch data recurrently from a file.
     """
-    def __init__(self, filename):
-        self.fname = filename
+    def __init__(self, file_name, max_epoch=None):
+        self.fname = file_name
+        self.max_epoch = max_epoch
+        self.nepoch = 0
         self.fp = None
 
     def __del__(self):
@@ -50,10 +52,15 @@ class BatchReader(object):
             self.fp.close()
 
     def get_batch(self, batch_size, out=None):
-        if not self.fp:
-            self.fp = open(self.fname)
         if out is None:
             out = []
+        if not self.fp:
+            if (not self.max_epoch) or self.nepoch < self.max_epoch:
+                # if max_epoch not set or num_epoch not reach the limit
+                self.fp = open(self.fname)
+                self.nepoch += 1
+            else:  # reach max_epoch limit
+                return out
         for line in self.fp:
             out.append(line.rstrip('\n'))
             if len(out) >= batch_size:
@@ -98,6 +105,6 @@ def draw_progress(iteration, total, pref='Progress:', suff='',
 
 
 if __name__ == '__main__':
-    freader = BatchReader('../run.sh')
+    freader = BatchReader('../run.sh', 2)
     for i in range(5):
-        print freader.get_batch(4)
+        print freader.get_batch(6)

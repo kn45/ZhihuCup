@@ -28,7 +28,7 @@ def inp_fn(data):
 
 train_file = '../mdl_cnn1/feat_train/trnvld_feature.tsv'
 #test_file = './rt-polarity.shuf.test'
-freader = dataproc.BatchReader(train_file)
+freader = dataproc.BatchReader(train_file, max_epoch=1)
 #with open(test_file) as f:
 #    test_data = [x.rstrip('\n') for x in f.readlines()]
 #test_x, test_y = inp_fn(test_data)
@@ -51,7 +51,7 @@ niter = 0
 while niter < 500:
     niter += 1
     batch_data = freader.get_batch(128)
-    if len(batch_data) <= 0:
+    if not batch_data:  # reach max_epoch
         break
     train_x, train_y = inp_fn(batch_data)
     mdl.train_step(sess, train_x, train_y)
