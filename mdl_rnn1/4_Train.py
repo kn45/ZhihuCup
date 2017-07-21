@@ -39,12 +39,14 @@ mdl = TextRNNClassifier(
     nclass=NCLASS,
     vocab_size=NWORDS,
     reg_lambda=0.0,
-    lr=1e-3)
+    lr=1e-3,
+    obj='ss',
+    nsample=5)
 
 sess = tf.Session()
 sess.run(tf.global_variables_initializer())
 sess.run(tf.local_variables_initializer())
-metrics = ['loss']
+metrics = ['loss', 'accuracy']
 niter = 0
 while niter < 500:
     niter += 1
@@ -53,12 +55,14 @@ while niter < 500:
         break
     train_x, train_y = inp_fn(batch_data)
     mdl.train_step(sess, train_x, train_y)
-    train_eval = mdl.eval_step(sess, train_x, train_y, metrics)
+    train_eval = 'SKIP'
     test_eval = 'SKIP'
+    if niter % 50 == 0:
+        train_eval = mdl.eval_step(sess, train_x, train_y, metrics)
     """
-    test_eval = mdl.eval_step(sess, test_x, test_y, metrics) \
-        if niter % 20 == 0 else 'SKIP'
+    if niter % 50 == 0:
+        test_eval = mdl.eval_step(sess, test_x, test_y, metrics)
     """
-    print 'train:', train_eval, 'test:', test_eval
+    print niter, 'train:', train_eval, 'test:', test_eval
 
 sess.close()
