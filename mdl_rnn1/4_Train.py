@@ -13,6 +13,9 @@ from text_rnn import TextRNNClassifier
 NCLASS = 1999
 NWORDS = 411721
 SEQ_LEN = 30
+LABEL_REPR = 'dense'
+MAX_ITER = 30000
+MODEL_CKPT_DIR = './model_ckpt/model.ckpt'
 
 
 def inp_fn(data):
@@ -27,11 +30,11 @@ def inp_fn(data):
     return np.array(inp_x), np.array(inp_y)
 
 train_file = '../mdl_cnn1/feat_train/trnvld_feature.tsv'
-#test_file = './rt-polarity.shuf.test'
+# test_file = '../mdl_cnn1/feat_test/test_feature.tsv'
 freader = dataproc.BatchReader(train_file, max_epoch=1)
-#with open(test_file) as f:
-#    test_data = [x.rstrip('\n') for x in f.readlines()]
-#test_x, test_y = inp_fn(test_data)
+# with open(test_file) as f:
+#     test_data = [x.rstrip('\n') for x in f.readlines()]
+# test_x, test_y = inp_fn(test_data)
 
 mdl = TextRNNClassifier(
     seq_len=SEQ_LEN,
@@ -40,17 +43,19 @@ mdl = TextRNNClassifier(
     vocab_size=NWORDS,
     reg_lambda=0.0,
     lr=1e-3,
-    obj='ss',
-    nsample=5)
+    label_repr=LABEL_REPR,
+    obj='softmax',
+    nsample=32)
 
 sess = tf.Session()
 sess.run(tf.global_variables_initializer())
 sess.run(tf.local_variables_initializer())
 metrics = ['loss', 'accuracy']
 niter = 0
-while niter < 500:
+
+while niter < MAX_ITER:
     niter += 1
-    batch_data = freader.get_batch(128)
+    batch_data = freader.get_batch(256)
     if not batch_data:  # reach max_epoch
         break
     train_x, train_y = inp_fn(batch_data)
@@ -59,10 +64,11 @@ while niter < 500:
     test_eval = 'SKIP'
     if niter % 50 == 0:
         train_eval = mdl.eval_step(sess, train_x, train_y, metrics)
-    """
-    if niter % 50 == 0:
-        test_eval = mdl.eval_step(sess, test_x, test_y, metrics)
-    """
+    # if niter % 50 == 0:
+    #     test_eval = mdl.eval_step(sess, test_x, test_y, metrics)
     print niter, 'train:', train_eval, 'test:', test_eval
+
+save_path = mdl.saver.save(sess, MODEL_CKPT_DIR, global_step=mdl.global_step)
+print "model saved:", save_path
 
 sess.close()
