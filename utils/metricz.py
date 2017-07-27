@@ -11,7 +11,7 @@ def eval_score(p_vals, t_vals):
             for pos, pred in enumerate(p_val):
                 if pred in t_val:  # hit
                     hit_label_at_pos_num[pos] += 1
-        prec = 0.0
+        prec = 0.
         for pos, hit_num in enumerate(hit_label_at_pos_num):
             prec += ((hit_num / sample_num)) / math.log(2.0 + pos)
         return prec
@@ -28,5 +28,8 @@ def eval_score(p_vals, t_vals):
 
     prec = _precision(p_vals, t_vals)
     rec = _recall(p_vals, t_vals)
-    score = (prec * rec) / (prec + rec)
+    if (prec + rec) == 0.:
+        score = 0.
+    else:
+        score = (prec * rec) / (prec + rec)
     return prec, rec, score
