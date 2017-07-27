@@ -1,10 +1,10 @@
 #!/bin/bash
 
-<<!
 # small word dict
-echo "UNK	0" > word_dict
-cat ../data_all/word_embedding.txt | awk -F' ' '{print $1"\t"NR}' >> word_dict
-!
+# words in embedding file, without infrequent words
+# 0 is used for zero padding
+echo "UNK	1" > word_dict
+cat ../data_all/word_embedding.txt | awk -F' ' '{print $1"\t"NR+1}' >> word_dict
 
 
 

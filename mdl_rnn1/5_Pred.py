@@ -18,6 +18,7 @@ MAX_ITER = 30000
 BATCH_SIZE = 128
 MODEL_CKPT_DIR = './model_ckpt/'
 
+UNK = 1
 
 def inp_fn(data, word_tb):
     inp_x = []
@@ -27,7 +28,7 @@ def inp_fn(data, word_tb):
         qid = flds[0]
         words = flds[2]
         word_ids = word_tb.lookup(words.split(','))
-        feats = [x if x else 0 for x in word_ids]
+        feats = [x if x else UNK for x in word_ids]
         inp_x.append(dataproc.zero_padding(feats, SEQ_LEN))
         inp_y.append(qid)
     return np.array(inp_x), inp_y

@@ -29,7 +29,7 @@ def inp_fn(data):
         inp_x.append(dataproc.zero_padding(feats, SEQ_LEN))
     return np.array(inp_x), np.array(inp_y)
 
-train_file = '../mdl_cnn1/feat_train/trnvld_feature.tsv'
+train_file = './feat_train/trnvld_feature.tsv'
 # test_file = '../mdl_cnn1/feat_test/test_feature.tsv'
 freader = dataproc.BatchReader(train_file, max_epoch=1)
 # with open(test_file) as f:
