@@ -10,4 +10,5 @@
 | rnn1  | lstm with title words | 1.23/0.50/0.36 | 0.36 |
 | rnn2  | lstm with title words + doc words | 1.13/0.47/0.33 | 0.34 |
 | ftxt5 | fasttext with title words + doc words | 1.14/0.48/0.34 | 0.34 |
+| cnn2  | cnn with title words, multilabel task | NA | NA |
 
