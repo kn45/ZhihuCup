@@ -7,3 +7,7 @@ data_all
 data_train
 data_test
 *.DS_Store
+*/word_dict
+*/label_dict
+*/log/*
+*/model_ckpt/*

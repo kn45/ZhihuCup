@@ -47,7 +47,7 @@ test_reader = dataproc.BatchReader(test_file, max_epoch=1)
 
 mdl = TextCNNClassifier(
     seq_len=SEQ_LEN,
-    emb_dim=256,
+    emb_size=256,
     nclass=NCLASS,
     vocab_size=NWORDS,
     filter_sizes=[2, 3, 4, 5, 6],
@@ -62,7 +62,9 @@ sess.run(tf.local_variables_initializer())
 metrics = ['loss']
 niter = 0
 
+print 'loading pretrained emb'
 pretrained_emb = load_embedding(EMB_FILE, NWORDS, 256)
+print 'loaded pretrained emb'
 mdl.assign_embedding(sess, pretrained_emb)
 while niter < MAX_ITER:
     niter += 1

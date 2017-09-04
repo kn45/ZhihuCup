@@ -54,7 +54,7 @@ test_writer = open(test_res, 'w')
 # load model
 mdl = TextCNNClassifier(
     seq_len=SEQ_LEN,
-    emb_dim=256,
+    emb_size=256,
     nclass=NCLASS,
     vocab_size=NWORDS,
     filter_sizes=[2, 3, 4, 5, 6],
